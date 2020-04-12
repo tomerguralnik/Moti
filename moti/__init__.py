@@ -1,8 +1,8 @@
 from .server import run_server
-from .client import upload_thought
 from .web import run_webserver
+from .client import run_client
 from .read import read
 from .utils import Connection, Listener
 from .thought import Thought
 from .utils import Reader
-from .protocol import Hello, Config, Snapshot
+from .utils import Hello, Config, Snapshot

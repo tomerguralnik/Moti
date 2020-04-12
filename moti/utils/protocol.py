@@ -1,4 +1,4 @@
-from struct import pack, unpack
+from struct import pack, unpack, calcsize
 from datetime import datetime
 from functools import reduce
 
@@ -10,6 +10,7 @@ def read_string(message):
         p_2 += x
         x = yield message[point: point + x]
         point = p_2
+
 
 
 class Hello:
@@ -103,46 +104,35 @@ class Snapshot:
 
     class Image:
 
-        def __init__(self, image, im_type):
+        def __init__(self, height, width, image, fmt):
+            self.height = height
+            self.width = width
             self.image = image
-            self.type = im_type
+            self.fmt =  fmt
 
         def serialize(self):
-            if self.type == 'color':
-                size = 3
-            elif self.type == 'depth':
-                size = 4
-            else:
-                raise Exception('Unsupported image type')
-            height = len(self.image)
-            width = 0 if height == 0 else len(self.image[0])
-            message = b''
-            message += pack('I', width)
-            message += pack('I', height)
             try:
-                image = reduce(lambda a, b: a+b, self.image)
-                image = [pack('b' * size, *box) for box in image]
-            except Exception:
-                image = []
+                size = calcsize(self.fmt)
+            except:
+                raise Exception(f"{self.fmt} isn't a supported format")
+            message = b''
+            message += pack('I', self.width)
+            message += pack('I', self.height)
+            image = [pack(self.fmt, *box) for box in self.image]
             message += b''.join(image)
             return message
 
-        def deserialize(message, height, width, im_type):
-            if im_type == 'color':
-                size = 3
-            elif im_type == 'depth':
-                size = 4
-            else:
-                raise Exception('Unsupported image type')
+        def deserialize(message, height, width, fmt):
+            try:
+                size = calcsize(fmt)
+            except:
+                raise Exception(f"{fmt} isn't a supported format")
             reader = read_string(message)
             next(reader)
-            image = [[0 for i in range(width)] for j in range(height)]
-            for row in range(height):
-                for col in range(width):
-                    image[row][col] = unpack('b' * size, reader.send(size))
-            if image == []:
-                image = [[]]
-            return Snapshot.Image(image, im_type)
+            image = [0  for i in range(height * width)]
+            for i in range(height * width):
+                image[i] = unpack(fmt, reader.send(size))
+            return Snapshot.Image(height, width, image, fmt)
 
 
     def __init__(self, timestamp, translation,
@@ -153,18 +143,30 @@ class Snapshot:
         self.color_image = color_image
         self.depth_image = depth_image
         self.feelings = feelings
+        self.pose = {'translation': self.translation, 
+                     'rotation': self.rotation}
 
     def serialize(self, fields):
-        translation = self.translation if \
-                        'translation' in fields else (0, 0, 0)
-        rotation = self.rotation if 'rotation' in fields else (0, 0, 0, 0)
+        translation = (self.translation['x'],
+                       self.translation['y'],
+                       self.translation['z']) \
+                       if 'translation' in fields else (0, 0, 0)
+        rotation = (self.rotation['x'],
+                    self.rotation['y'],
+                    self.rotation['z'],
+                    self.rotation['w']) \
+                     if 'rotation' in fields else (0, 0, 0, 0)
         color_image = self.color_image if \
-            'color_image' in fields else Snapshot.Image([], 'color')
+            'color_image' in fields else Snapshot.Image(0, 0, [], 'BBB')
         depth_image = self.depth_image if \
-            'depth_image' in fields else Snapshot.Image([], 'depth')
-        feelings = self.feelings if 'feelings' in fields else (0, 0, 0, 0)
+            'depth_image' in fields else Snapshot.Image(0, 0, [], 'f')
+        feelings = (self.feelings['hunger'],
+                    self.feelings['thirst'],
+                    self.feelings['exhaustion'],
+                    self.feelings['happiness'])\
+                    if 'feelings' in fields else (0, 0, 0, 0)
         message = b''
-        message += pack('I', self.timestamp)
+        message += pack('L', self.timestamp)
         message += pack('ddd', *translation)
         message += pack('dddd', *rotation)
         message += color_image.serialize()
@@ -175,18 +177,29 @@ class Snapshot:
     def deserialize(message):
         reader = read_string(message)
         next(reader)
-        timestamp = unpack('I', reader.send(4))[0]
+        timestamp = unpack('L', reader.send(8))[0]
         translation = unpack('ddd', reader.send(24))
+        translation = {'x': translation[0],
+                      'y': translation[1],
+                      'z': translation[2]}
         rotation = unpack('dddd', reader.send(32))
+        rotation = {'x': rotation[0],
+                    'y': rotation[1],
+                    'z': rotation[2],
+                    'w': rotation[3]}
         height = unpack('I', reader.send(4))[0]
         width = unpack('I', reader.send(4))[0]
         color_image = Snapshot.Image.deserialize(
-            reader.send(width * height * 3), height, width, 'color')
+            reader.send(width * height * 3), height, width, 'BBB')
         height = unpack('I', reader.send(4))[0]
         width = unpack('I', reader.send(4))[0]
         depth_image = Snapshot.Image.deserialize(
-                                reader.send(width * height * 4), height, width, 'depth')
+                                reader.send(width * height * 4), height, width, 'f')
         feelings = unpack('ffff', reader.send(16))
+        feelings = {'hunger': feelings[0],
+                    'thirst': feelings[1],
+                    'exhaustion': feelings[2],
+                    'happiness': feelings[3]}
         return Snapshot(timestamp, translation, rotation,
                         color_image, depth_image, feelings)
 
