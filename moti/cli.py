@@ -2,5 +2,13 @@ import click
 
 
 @click.group()
-def cli():
+def client():
     pass
+
+@click.group()
+def server():
+	pass
+
+@click.group()
+def reader():
+	pass

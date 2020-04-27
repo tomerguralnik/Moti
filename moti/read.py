@@ -1,9 +1,9 @@
 from .utils import Reader
-from .cli import cli
+from .cli import reader
 import click
 
 
-@cli.command()
+@reader.command()
 @click.option('--path', prompt='Path', help='Path of snapshot')
 def read(path):
     reader = Reader(path, 'proto_reader')

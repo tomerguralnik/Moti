@@ -2,7 +2,7 @@ from pathlib import Path
 import click
 import re
 from flask import Flask
-from .cli import cli
+#from .cli import cli
 web_server = Flask(__name__)
 data_directory = ''
 _INDEX_HTML = '''
@@ -36,7 +36,7 @@ _USER_ID_ENTRY_HTML = '''<tr>
 </tr>'''
 _TIME_FORMAT = '{Y}-{M}-{D} {H}:{m}:{S}'
 
-
+'''
 @web_server.route('/')
 def index_page():
     global data_directory
@@ -80,3 +80,4 @@ def run_webserver(address, data):
     address = address.split(':')
     address[1] = int(address[1])
     web_server.run(*address)
+'''
