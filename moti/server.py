@@ -2,7 +2,7 @@ import threading
 from pathlib import Path
 from struct import unpack
 import click
-from .cli import cli
+from .cli import server
 from .utils import Listener
 from .thought import Thought
 from .utils import Hello, Config, Snapshot
@@ -11,19 +11,25 @@ from PIL import Image
 import json
 from datetime import datetime
 from functools import reduce
+from .utils import Config_handler
 parser = Parser()
 
 def reverse(tup):
     a,b,c = tup
     return (c, b, a)
 
-@cli.command()
-@click.option('--address', prompt='Adress', help='Adress of server')
-@click.option('--data', prompt='data dict', help='The path to data dictionary')
-def run_server(address, data):
-    address = address.split(':')
-    host, port = address[0], int(address[1])
-    server = Listener(port, host)
+@server.command()
+@click.option('--host', '-h', help = 'Host ip', default = '127.0.0.1')
+@click.option('--port', '-p', help = 'Host port', default = '8000')
+@click.option('--data', '-d', help = 'The path to data dictionary', default = 'data')
+@click.option('--config', '-c', help = 'Config file', default = None)
+def run_server(host = '127.0.0.1', port = '8000', data = 'data', config = None):
+    if config:
+        config = Config_handler(config, 'server')
+        port = config.port
+        host = config.host
+        data = config.data
+    server = Listener(int(port), host)
     server.start()
     p = Path(data)
     if p.is_file():
@@ -76,4 +82,4 @@ def session_handler(client, path):
 
 
 if __name__ == '__main__':
-    cli.main()
+    server()

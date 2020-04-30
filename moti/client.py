@@ -3,9 +3,10 @@ import click
 import datetime
 from .thought import Thought
 from .utils import Connection
-from .cli import cli
+from .cli import client
 from .utils import Reader
 from .utils import Hello, Config, Snapshot
+from .utils import Config_handler
 
 
 def reader_to_server(snapshot):
@@ -23,17 +24,22 @@ def reader_to_server(snapshot):
                                   
                            
 
-@cli.command()
-@click.option('--address', prompt='Address', help='Address of server')
-@click.option('--snapshots', prompt='snapshots', help='User id of snapshot')
-#@click.option('--thought', prompt='num', help='Number of snapshots to send')
-def run_client(address, snapshots):
-    address = address.split(':')
-    address = (address[0], int(address[1]))
+@client.command()
+@click.option('--host', '-h', help='Address of server', default = '127.0.0.1')
+@click.option('--port', '-p', help='User id of snapshot', default = '8000')
+@click.option('--path', help='Number of snapshots to send', default = 'sample.mind.gz')
+@click.option('--config', '-c', help = 'Config file', default = None)
+def upload_sample(host = '127.0.0.1', port = '8000', path = 'sample.mind.gz', config = None):
+    if config:
+        config = Config_handler(config, 'client')
+        host = config.host
+        port = config.port
+        path = config.path
+    address = (host, int(port))
     sender = socket.socket()
     sender.connect(address)
     conn = Connection(sender)
-    reader = Reader(snapshots, 'proto_reader')
+    reader = Reader(path, 'proto_reader')
     hello = Hello(reader.user_id, reader.user_name, datetime.datetime.strptime(reader.birth_date,'%Y-%m-%d %H:%M:%S'), reader.gender)
     for snapshot in reader:
         serv_snap = reader_to_server(snapshot)
@@ -48,4 +54,4 @@ def run_client(address, snapshots):
 
 
 if __name__ == '__main__':
-    cli.main()
+    client()
