@@ -105,10 +105,10 @@ class Snapshot:
     class Image:
 
         def __init__(self, height, width, image, fmt):
-            self.height = height
-            self.width = width
-            self.image = image
-            self.fmt =  fmt
+            self.height = height #int
+            self.width = width #int
+            self.image = image #1d array 
+            self.fmt =  fmt #string
 
         def serialize(self):
             try:
@@ -137,14 +137,14 @@ class Snapshot:
 
     def __init__(self, timestamp, translation,
                  rotation, color_image, depth_image, feelings):
-        self.timestamp = timestamp
-        self.translation = translation
-        self.rotation = rotation
-        self.color_image = color_image
-        self.depth_image = depth_image
-        self.feelings = feelings
+        self.timestamp = timestamp #int
+        self.translation = translation #dict
+        self.rotation = rotation #dict
+        self.color_image = color_image #Image
+        self.depth_image = depth_image #Image
+        self.feelings = feelings #dict
         self.pose = {'translation': self.translation, 
-                     'rotation': self.rotation}
+                     'rotation': self.rotation} #dict
 
     def serialize(self, fields):
         translation = (self.translation['x'],

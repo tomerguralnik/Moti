@@ -7,6 +7,11 @@ from .cli import client
 from .utils import Reader
 from .utils import Hello, Config, Snapshot
 from .utils import Config_handler
+import logging
+logging.basicConfig(format = '%(levelname).1s %(asctime)s %(message)s',
+                    datefmt = '%Y-%m-%d %H:%M:%S')
+logger = logging.getLogger('client')
+logger.setLevel(logging.INFO)
 
 
 def reader_to_server(snapshot):
@@ -44,12 +49,12 @@ def upload_sample(host = '127.0.0.1', port = '8000', path = 'sample.mind.gz', co
     for snapshot in reader:
         serv_snap = reader_to_server(snapshot)
         conn.send_message(hello.serialize())
-        print('sent hello')
+        logger.info('sent hello')
         config = Config.deserialize(conn.receive_message())
-        print('got config')
+        logger.info('got config')
         conn.send_message(serv_snap.serialize(config.fields))
-        print('done snapshot')
-    print('done')
+        logger.info('done snapshot')
+    logger.info('done')
     conn.close()
 
 
