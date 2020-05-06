@@ -4,15 +4,17 @@ from datetime import datetime
 from struct import unpack
 import importlib
 import sys
-
-def camel_from_snake(name):
-    return ''.join([word[0].upper() + word[1:] for word in name.split('_')])
+from .misc import camel_from_snake
 
 class Reader:
 
     def __init__(self, path, reader):
         self.get_readers()
-        self.reader = self.readers[reader](path)
+        try:
+            self.reader = self.readers[reader](path)
+        except KeyError as e:
+            print(f"Reader {reader} wasn't found")
+            raise(e)
         user = self.reader.get_user()
         for field in user:
             self.__dict__[field] = user[field]

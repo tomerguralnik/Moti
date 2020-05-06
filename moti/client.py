@@ -23,12 +23,6 @@ def reader_to_server(snapshot):
     return Snapshot(timestamp, translation, rotation, color_image, depth_image, feelings)  
                                   
                            
-
-@client.command()
-@click.option('--host', '-h', help='Address of server', default = '127.0.0.1')
-@click.option('--port', '-p', help='User id of snapshot', default = '8000')
-@click.option('--path', help='Number of snapshots to send', default = 'sample.mind.gz')
-@click.option('--config', '-c', help = 'Config file', default = None)
 def upload_sample(host = '127.0.0.1', port = '8000', path = 'sample.mind.gz', config = None):
     if config:
         config = Config_handler(config, 'client')
@@ -52,6 +46,12 @@ def upload_sample(host = '127.0.0.1', port = '8000', path = 'sample.mind.gz', co
     print('done')
     conn.close()
 
-
+@client.command(name = 'upload-sample')
+@click.option('--host', '-h', help='Address of server', default = '127.0.0.1')
+@click.option('--port', '-p', help='User id of snapshot', default = '8000')
+@click.option('--path', help='Number of snapshots to send', default = 'sample.mind.gz')
+@click.option('--config', '-c', help = 'Config file', default = None)
+def cli_upload_sample(host = '127.0.0.1', port = '8000', path = 'sample.mind.gz', config = None):
+    upload_sample(host, port, path, config)
 if __name__ == '__main__':
     client()

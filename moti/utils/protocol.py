@@ -1,6 +1,7 @@
 from struct import pack, unpack, calcsize
 from datetime import datetime
 from functools import reduce
+import numpy
 
 def read_string(message):
     point = 0
@@ -20,6 +21,10 @@ class Hello:
         self.user_name = user_name
         self.birth_date = birth_date
         self.gender = gender
+        self.as_dict = {'user_id': user_id,
+                        'user_name' : user_name,
+                        'birth_date' : birth_date.strftime('%Y-%m-%d %H:%M:%S'),
+                        'gender' : gender}
 
     def serialize(self):
         message = b''
@@ -109,6 +114,15 @@ class Snapshot:
             self.width = width
             self.image = image
             self.fmt =  fmt
+
+        def compactify(self, path, timestamp):
+            path = path / (self.fmt + 'TIME'+ datetime.fromtimestamp(timestamp/1000).strftime('%Y-%m-%d_%H-%M-%S.%f') + '.npy')
+            fp = path.open('wb+')
+            numpy.save(fp, self.image, allow_pickle = False)
+            return {'height' : self.height,
+                    'width' : self.width,
+                    'image' : str(path),
+                    'fmt' : self.fmt}
 
         def serialize(self):
             try:
@@ -202,6 +216,15 @@ class Snapshot:
                     'happiness': feelings[3]}
         return Snapshot(timestamp, translation, rotation,
                         color_image, depth_image, feelings)
+
+    def compactify(self, path):
+        return {'timestamp' : self.timestamp,
+                'translation': self.translation,
+                'rotation' : self.rotation,
+                'color_image' : self.color_image.compactify(path, self.timestamp),
+                'depth_image' : self.depth_image.compactify(path, self.timestamp),
+                'feelings' : self.feelings,
+                'pose' : self.pose}
 
     def __repr__(self):
         return f'''Time: {self.timestamp}, Translation: {self.translation}

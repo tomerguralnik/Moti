@@ -1,49 +1,32 @@
 import threading
 from pathlib import Path
-from struct import unpack
 import click
 from .cli import server
 from .utils import Listener
-from .thought import Thought
 from .utils import Hello, Config, Snapshot
-from .utils import read_string, Parser
-from PIL import Image
-import json
-from datetime import datetime
-from functools import reduce
+from .utils import Parser
 from .utils import Config_handler
+from .utils import Publisher
+from furl import furl
 parser = Parser()
 
 def reverse(tup):
     a,b,c = tup
     return (c, b, a)
 
-@server.command()
-@click.option('--host', '-h', help = 'Host ip', default = '127.0.0.1')
-@click.option('--port', '-p', help = 'Host port', default = '8000')
-@click.option('--data', '-d', help = 'The path to data dictionary', default = 'data')
-@click.option('--config', '-c', help = 'Config file', default = None)
-def run_server(host = '127.0.0.1', port = '8000', data = 'data', config = None):
-    if config:
-        config = Config_handler(config, 'server')
-        port = config.port
-        host = config.host
-        data = config.data
+def run_server(publish, host = '127.0.0.1', port = 8000):
     server = Listener(int(port), host)
     server.start()
-    p = Path(data)
-    if p.is_file():
-        raise Exception('data is a file and not a directory')
     while True:
         client = server.accept()
-        t = threading.Thread(target=session_handler, args=(client, p))
+        t = threading.Thread(target=session_handler, args=(client, publish))
         t.start()
     server.stop()
 
 
-def session_handler(client, path):
+def session_handler(client, publish):
     while(True):
-        fields = parser.parsers.keys()
+        fields = parser.fields
         lock = threading.Lock()
         try:
             hi_message = client.receive_message()
@@ -71,15 +54,28 @@ def session_handler(client, path):
             print("Snapshot:", e)
             return
         print('got snapshot')
-        lock.acquire()
-        p = path / f'{hello.user_id}'
-        p.mkdir(exist_ok=True)
-        p = p / f"{datetime.fromtimestamp(snapshot.timestamp/1000).strftime('%Y-%m-%d_%H-%M-%S.%f')}"
-        p.mkdir(exist_ok=True)
-        parser.parse(fields ,snapshot, p)
-        lock.release()
+        snapshot.user = hello.as_dict
+        publish(snapshot)
         print('done')
 
+@server.command(name = 'run-server')
+@click.option('--host', '-h', help='Address of server', default = '127.0.0.1')
+@click.option('--port', '-p', help='User id of snapshot', default = '8000')
+@click.option('--queue', '-q', help='Number of snapshots to send', default = 'rabbitmq://127.0.0.1:5672')
+@click.option('--config', '-c', help = 'Config file', default = None)
+def cli_run_server(host = '127.0.0.1', port = 8000, queue = 'rabbitmq://127.0.0.1:5672', config = None):
+    if config:
+        config = Config_handler(config, 'server')
+        host = config.host
+        port = config.port
+        queue = config.queue
+    queue = furl(queue)
+    mq = queue.scheme
+    mq_host = queue.host
+    mq_port = queue.port
+    data_dict = Path(__file__).parent.parent.absolute()/'data'
+    publisher = Publisher(parser.parsers_to_string(), mq, data_dict, mq_host, mq_port)
+    run_server(publisher, host, port)
 
 if __name__ == '__main__':
     server()

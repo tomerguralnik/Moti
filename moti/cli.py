@@ -12,3 +12,11 @@ def server():
 @click.group()
 def reader():
 	pass
+
+@click.group()
+def parsing():
+	pass
+
+@click.group()
+def saver_cli():
+	pass

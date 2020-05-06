@@ -3,39 +3,69 @@ from PIL import Image
 import json
 import matplotlib.pyplot as plt
 import numpy as np
+from datetime import datetime
 
 def parse_color_image(snapshot, path):
+    snapshot = Path(snapshot.decode('ascii'))
+    with snapshot.open() as snap:
+        snapshot = json.load(snap)
+        image = snapshot['color_image']
+    color_image = np.load(image['image'])
+    path = path / str(snapshot['user']['user_id'])
+    path.mkdir(exist_ok = True)
+    path = path / datetime.fromtimestamp(snapshot['timestamp']/1000).strftime('%Y-%m-%d_%H-%M-%S.%f')
+    path.mkdir(exist_ok = True)
     path = path / 'color_image.jpg'
     path.touch()
-    height = snapshot.color_image.height
-    width = snapshot.color_image.width
+    height = image['height']
+    width = image['width']
     image = Image.new('RGB', (height, width))
-    image.putdata(snapshot.color_image.image)
+    image.putdata([tuple(pixel) for pixel in color_image.tolist()])
     image.save(path)
+    return json.dumps({'user_id': snapshot['user']['user_id'],
+                       'timestap': snapshot['timestamp'],
+                       'color_image': path.absolute()})
 
 parse_color_image.fields = ['color_image']
 
 def parse_pose(snapshot, path):
-    path = path/'pose.json'
-    path.touch()
-    fp = path.open('w')
-    json.dump(snapshot.pose, fp)
+    print(snapshot)
+    snapshot = Path(snapshot.decode('ascii'))
+    with snapshot.open() as snap:
+        snapshot = json.load(snap)
+    return json.dumps({'user_id': snapshot['user']['user_id'],
+                       'timestap': snapshot['timestamp'],
+                       'pose': snapshot['pose']})
 
-parse_pose.fields = ['translation', 'rotation']
+parse_pose.fields = ['pose']
 
 def parse_feelings(snapshot, path):
-    path = path/'feelings.json'
-    path.touch()
-    fp = path.open('w')
-    json.dump(snapshot.feelings, fp)
+    snapshot = Path(snapshot.decode('ascii'))
+    with snapshot.open() as snap:
+        snapshot = json.load(snap)
+    return json.dumps({'user_id': snapshot['user']['user_id'], 
+                       'timestamp': snapshot['timestamp'],
+                       'feelings': snapshot['feelings']})
 
 parse_feelings.fields = ['feelings']
 
 def parse_depth_image(snapshot, path):
+    snapshot = Path(snapshot.decode('ascii'))
+    with snapshot.open() as snap:
+        snapshot = json.load(snap)
+        image = snapshot['depth_image']
+    depth_image = np.load(image['image'])
+    path = path / str(snapshot['user']['user_id'])
+    path.mkdir(exist_ok = True)
+    path = path / datetime.fromtimestamp(snapshot['timestamp']/1000).strftime('%Y-%m-%d_%H-%M-%S.%f')
+    path.mkdir(exist_ok = True)
     path = path/'depth_image.jpg'
-    image = np.reshape(from_tup(snapshot.depth_image.image), (-1, snapshot.depth_image.height))
+    image = np.reshape(depth_image, (-1, image['height']))
     plt.imshow(image)
     plt.savefig(path)
+    return json.dumps({'user_id': snapshot['user']['user_id'], 
+                       'timestamp': snapshot['timestamp'],
+                       'depth_image': path.absolute()})
 
 parse_depth_image.fields = ['depth_image']
 
