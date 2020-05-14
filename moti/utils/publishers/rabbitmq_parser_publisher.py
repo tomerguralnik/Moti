@@ -4,10 +4,12 @@ from pathlib import Path
 from datetime import datetime
 
 class RabbitmqParserPublisher:
-	protocol = 'rabbitmq_consumer'
-	def __init__(self, parsers, host, port, path, name):
+	protocol = 'rabbitmq_parser'
+	def __init__(self, queues, host, port, path, name, parsers):
 		self.name = name
+		self.queues = queues
 		self.parsers = parsers
+		self.path = path
 		connection = pika.BlockingConnection(
 			 		 pika.ConnectionParameters(host = host,
 			 						           port = port))
@@ -15,13 +17,16 @@ class RabbitmqParserPublisher:
 		channel.exchange_declare(exchange = name,
 								 exchange_type = 'direct')
 		self.channel = channel
-		for parser in parsers:
-			self.channel.queue_declare(queue = parser + self.name)
+		for queue in queues:
+			print(f"{self.name}/{queue}")
+			self.channel.queue_declare(queue = f"{self.name}/{queue}")
 			self.channel.queue_bind(exchange = self.name,
-							   		queue = parser + self.name,
-							   		routing_key = parser  + self.name)
-	def publish_factory(self, snapshot, parser):
-		print(parser.__name__ + self.name)
+							   		queue = f"{self.name}/{queue}",
+							   		routing_key = f"{self.name}/{queue}")
+
+	def publish_factory(self, snapshot, queue):
+		print(f"GREETINGS!! PARSER {queue}")
+		parser = self.parsers.decode_queue(queue)
 		self.channel.basic_publish(exchange = self.name, 
-								   body = snapshot,
-								   routing_key = parser.__name__  + self.name)
+								   body = parser(snapshot, self.path),
+								   routing_key = f"{self.name}/{queue}")

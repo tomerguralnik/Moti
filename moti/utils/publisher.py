@@ -1,26 +1,33 @@
 from .misc import camel_from_snake
 import importlib
 from pathlib import Path
+from furl import furl
 import sys
 
 class Publisher:
-    def __init__(self, queues, publisher, path = None, host = '127.0.0.1', port = 5672, name = 'Server'):
+    def __init__(self, queues, mq_url, path = None, name = 'Server', parsers = None):
         self.get_publishers()
-        if publisher in self.publishers:
-            self.publisher = self.publishers[publisher](queues, host, port, path, name)
-        elif publisher in self.protocols:
-            self.publisher = self.protocols[publisher](queues, host, port, path, name)
+        queue = furl(mq_url)
+        protocol = queue.scheme
+        host = queue.host
+        port = queue.port
+        if protocol in self.publishers:
+            if parsers:
+                self.publisher = self.publishers[protocol](queues, host, port, path, name, parsers)
+            else:
+                self.publisher = self.publishers[protocol](queues, host, port, path, name)
         else:
-            print(f"publisher {publisher} does'nt fit any current protocol or publisher")
+            print(f"protocol {protocol} does'nt fit any current protocol or publisher")
             raise KeyError('publisher was not found')
 
-    def __call__(self, snapshot, parser = None):
+    def __call__(self, snapshot, queue = None):
         try:
             return self.publisher.publish(snapshot)
         except AttributeError:
-            print("No publisher")
+            #TODO: logging
+            pass
         try:
-            return self.publisher.publish_factory(snapshot, parser)
+            return self.publisher.publish_factory(snapshot, queue)
         except AttributeError:
             raise Exception("No publishing method given!")
 
@@ -30,7 +37,6 @@ class Publisher:
         publishers = utils/'publishers'
         sys.path.insert(0, str(utils))
         self.publishers = {}
-        self.protocols = {}
         for publisher in publishers.iterdir():
             if not 'publisher' in publisher.name:
                 continue
@@ -40,6 +46,5 @@ class Publisher:
             except Exception as e:
                 print(f"{publishers.name}.{publisher.stem} in wrong format" , e)
                 continue
-            self.publishers[publisher.stem] = m
             if 'protocol' in m.__dict__:
-                self.protocols[m.__dict__['protocol']] = m
+                self.publishers[m.__dict__['protocol']] = m

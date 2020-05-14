@@ -6,6 +6,7 @@ import numpy as np
 from datetime import datetime
 
 def parse_color_image(snapshot, path):
+    print('color_image')
     snapshot = Path(snapshot.decode('ascii'))
     with snapshot.open() as snap:
         snapshot = json.load(snap)
@@ -22,34 +23,36 @@ def parse_color_image(snapshot, path):
     image = Image.new('RGB', (height, width))
     image.putdata([tuple(pixel) for pixel in color_image.tolist()])
     image.save(path)
-    return json.dumps({'user_id': snapshot['user']['user_id'],
-                       'timestap': snapshot['timestamp'],
-                       'color_image': path.absolute()})
+    return json.dumps({'user': snapshot['user'],
+                       'timestamp': snapshot['timestamp'],
+                       'color_image': str(path.absolute())})
 
 parse_color_image.fields = ['color_image']
 
 def parse_pose(snapshot, path):
-    print(snapshot)
+    print('pose')
     snapshot = Path(snapshot.decode('ascii'))
     with snapshot.open() as snap:
         snapshot = json.load(snap)
-    return json.dumps({'user_id': snapshot['user']['user_id'],
-                       'timestap': snapshot['timestamp'],
+    return json.dumps({'user': snapshot['user'],
+                       'timestamp': snapshot['timestamp'],
                        'pose': snapshot['pose']})
 
 parse_pose.fields = ['pose']
 
 def parse_feelings(snapshot, path):
+    print('feelings')
     snapshot = Path(snapshot.decode('ascii'))
     with snapshot.open() as snap:
         snapshot = json.load(snap)
-    return json.dumps({'user_id': snapshot['user']['user_id'], 
+    return json.dumps({'user': snapshot['user'], 
                        'timestamp': snapshot['timestamp'],
                        'feelings': snapshot['feelings']})
 
 parse_feelings.fields = ['feelings']
 
 def parse_depth_image(snapshot, path):
+    print('depth_image')
     snapshot = Path(snapshot.decode('ascii'))
     with snapshot.open() as snap:
         snapshot = json.load(snap)
@@ -63,9 +66,9 @@ def parse_depth_image(snapshot, path):
     image = np.reshape(depth_image, (-1, image['height']))
     plt.imshow(image)
     plt.savefig(path)
-    return json.dumps({'user_id': snapshot['user']['user_id'], 
+    return json.dumps({'user': snapshot['user'], 
                        'timestamp': snapshot['timestamp'],
-                       'depth_image': path.absolute()})
+                       'depth_image': str(path.absolute())})
 
 parse_depth_image.fields = ['depth_image']
 

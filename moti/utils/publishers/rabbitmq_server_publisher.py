@@ -4,12 +4,12 @@ from pathlib import Path
 from datetime import datetime
 
 class RabbitmqServerPublisher:
-	protocol = 'rabbitmq'
-	def __init__(self, parsers, host, port, path, name):
+	protocol = 'rabbitmq_server'
+	def __init__(self, queues, host, port, path, name):
 		self.name = name
 		self.path = path / 'publish_records'
 		self.path.mkdir(exist_ok = True)
-		self.parsers = parsers
+		self.queues = queues
 		connection = pika.BlockingConnection(
 			 		 pika.ConnectionParameters(host = host,
 			 						           port = port))
@@ -17,10 +17,10 @@ class RabbitmqServerPublisher:
 		channel.exchange_declare(exchange = name,
 								 exchange_type = 'fanout')
 		self.channel = channel
-		for parser in parsers:
-			self.channel.queue_declare(queue = parser  + self.name)
+		for queue in queues:
+			self.channel.queue_declare(queue = f"{self.name}/{queue}")
 			self.channel.queue_bind(exchange = self.name,
-							   		queue = parser  + self.name)
+							   		queue = f"{self.name}/{queue}")
 
 	def publish(self, snapshot):
 		msg = str(self._to_json(snapshot))

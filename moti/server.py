@@ -61,20 +61,18 @@ def session_handler(client, publish):
 @server.command(name = 'run-server')
 @click.option('--host', '-h', help='Address of server', default = '127.0.0.1')
 @click.option('--port', '-p', help='User id of snapshot', default = '8000')
-@click.option('--queue', '-q', help='Number of snapshots to send', default = 'rabbitmq://127.0.0.1:5672')
 @click.option('--config', '-c', help = 'Config file', default = None)
-def cli_run_server(host = '127.0.0.1', port = 8000, queue = 'rabbitmq://127.0.0.1:5672', config = None):
+@click.argument('queue', nargs = -1)
+def cli_run_server(queue, host = '127.0.0.1', port = 8000, config = None):
     if config:
         config = Config_handler(config, 'server')
         host = config.host
         port = config.port
         queue = config.queue
     queue = furl(queue)
-    mq = queue.scheme
-    mq_host = queue.host
-    mq_port = queue.port
+    queue.scheme = queue.scheme + '_server'
     data_dict = Path(__file__).parent.parent.absolute()/'data'
-    publisher = Publisher(parser.parsers_to_string(), mq, data_dict, mq_host, mq_port)
+    publisher = Publisher(parser.generate_queues(), str(queue), path = data_dict)
     run_server(publisher, host, port)
 
 if __name__ == '__main__':

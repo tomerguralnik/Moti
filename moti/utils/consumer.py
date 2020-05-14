@@ -1,43 +1,34 @@
-from .parser import Parser
-import pika
+from furl import furl
+from pathlib import Path
+import sys
+import importlib
+from .misc import camel_from_snake
 class Consumer:
-    def __init__(self, context, publish = None, publish_factory = None, host = '127.0.0.1', port = 5672, name = 'Server', parsers = None):
-        if parsers == None:
-            self.parsers = Parser().parsers
-        else:
-            self.parsers = parsers
-        self.name = name
-        self.context = context
-        self.publish = publish
-        self.publish_factory = publish_factory
-        connection = pika.BlockingConnection(
-                     pika.ConnectionParameters(host = host,
-                                               port = port))
-        channel = connection.channel()
-        channel.exchange_declare(exchange = name,
-                                exchange_type = 'fanout')
-        self.channel = channel
-        for parser in self.parsers:
-            self.channel.queue_declare(queue = parser.__name__  + self.name)
-            self.channel.queue_bind(exchange = self.name,
-                                    queue = parser.__name__  + self.name)
+    def __init__(self, mq_url):
+        #mq_url = "protocol://host:port/exchange"
+        self.get_consumers()
+        queue = furl(mq_url)
+        self.consumer = self.consumers[queue.scheme](host = queue.host, port = queue.port, exchange_name = str(queue.path)[1:])
+
+    def add_queue(self, queue, callback):
+        self.consumer.add_queue(queue, callback)
 
     def consume(self):
-        for parser in self.parsers:
-            self.channel.basic_consume(queue = parser.__name__  + self.name,
-                                       on_message_callback = self.create_callback(parser),
-                                       auto_ack = True)
-        self.channel.start_consuming()
-
-    def create_callback(self, parser):
-        if self.publish:
-            def callback(ch, method, properties, body):
-                print("HI")
-                self.publish(parser(body, self.context))
-        elif self.publish_factory:
-            def callback(ch, method, properties, body):
-                print("hi")
-                self.publish_factory(parser(body, self.context), parser)
-        return callback
-
-            
+        self.consumer.consume()
+        
+    def get_consumers(self):
+        utils = Path(__file__).parent.absolute()
+        consumers = utils/'consumers'
+        sys.path.insert(0, str(utils))
+        self.consumers = {}
+        for consumer in consumers.iterdir():
+            if not 'consumer' in consumer.name:
+                continue
+            m = importlib.import_module(f'{consumers.name}.{consumer.stem}')
+            try:
+                m = m.__dict__[camel_from_snake(consumer.stem)]
+            except Exception as e:
+                print(f"{consumers.name}.{consumer.stem} in wrong format" , e)
+                continue
+            if 'protocol' in m.__dict__:
+                self.consumers[m.__dict__['protocol']] = m

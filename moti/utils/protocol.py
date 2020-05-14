@@ -23,7 +23,7 @@ class Hello:
         self.gender = gender
         self.as_dict = {'user_id': user_id,
                         'user_name' : user_name,
-                        'birth_date' : birth_date.strftime('%Y-%m-%d %H:%M:%S'),
+                        'birth_date' : int(birth_date.timestamp()),
                         'gender' : gender}
 
     def serialize(self):
