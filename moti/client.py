@@ -3,11 +3,13 @@ import click
 import datetime
 from .thought import Thought
 from .utils import Connection
-from .cli import client
 from .utils import Reader
 from .utils import Hello, Config, Snapshot
 from .utils import Config_handler
 
+@click.group()
+def client():
+    pass
 
 def reader_to_server(snapshot):
     timestamp = snapshot.timestamp

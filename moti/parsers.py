@@ -1,10 +1,13 @@
 from .utils import Consumer
 from .utils import Parser
-from .cli import parsing
 from pathlib import Path
 from furl import furl
 from .utils import Publisher, Transfer
 import click
+
+@click.group()
+def parsing():
+    pass
 
 data_dir = Path(__file__).parent.parent.absolute()/'data'
 

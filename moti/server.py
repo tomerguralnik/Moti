@@ -1,7 +1,6 @@
 import threading
 from pathlib import Path
 import click
-from .cli import server
 from .utils import Listener
 from .utils import Hello, Config, Snapshot
 from .utils import Parser
@@ -9,6 +8,10 @@ from .utils import Config_handler
 from .utils import Publisher
 from furl import furl
 parser = Parser()
+
+@click.group()
+def server():
+    pass
 
 def reverse(tup):
     a,b,c = tup
@@ -69,6 +72,8 @@ def cli_run_server(queue, host = '127.0.0.1', port = 8000, config = None):
         host = config.host
         port = config.port
         queue = config.queue
+    else:
+        queue = queue[0]
     queue = furl(queue)
     queue.scheme = queue.scheme + '_server'
     data_dict = Path(__file__).parent.parent.absolute()/'data'

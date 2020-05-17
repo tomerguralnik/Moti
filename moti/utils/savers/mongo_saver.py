@@ -1,7 +1,7 @@
-import pymongo
 from pymongo import MongoClient
 import json
 import threading
+
 class MongoSaver:
 	protocol = 'mongodb'
 	def __init__(self, host = '127.0.0.1', port = 27017):
@@ -29,6 +29,7 @@ class MongoSaver:
 		if not snapshot:
 			self.snapshots.insert_one({'user_id': user_id,
 									   'timestamp': timestamp,
+									   'ID': timestamp,
 									   topic: field,
 									   'fields': [topic]})
 		else:

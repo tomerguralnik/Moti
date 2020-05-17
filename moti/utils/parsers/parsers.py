@@ -3,6 +3,7 @@ from PIL import Image
 import json
 import matplotlib.pyplot as plt
 import numpy as np
+from struct import pack, unpack
 from datetime import datetime
 
 def parse_color_image(snapshot, path):
@@ -11,7 +12,9 @@ def parse_color_image(snapshot, path):
     with snapshot.open() as snap:
         snapshot = json.load(snap)
         image = snapshot['color_image']
-    color_image = np.load(image['image'])
+    color_image_bin = open(image['image'], 'rb').read()
+    color_image = [unpack('BBB', color_image_bin[i*3 : i*3 + 3]) for i in range(len(color_image_bin)//3)]
+    color_image = np.array(color_image)
     path = path / str(snapshot['user']['user_id'])
     path.mkdir(exist_ok = True)
     path = path / datetime.fromtimestamp(snapshot['timestamp']/1000).strftime('%Y-%m-%d_%H-%M-%S.%f')
@@ -57,7 +60,9 @@ def parse_depth_image(snapshot, path):
     with snapshot.open() as snap:
         snapshot = json.load(snap)
         image = snapshot['depth_image']
-    depth_image = np.load(image['image'])
+    depth_image_bin = open(image['image'], 'rb').read()
+    depth_image = [unpack('f', depth_image_bin[i*4 : i*4 + 4]) for i in range(len(depth_image_bin)//4)]
+    depth_image = np.array(depth_image)
     path = path / str(snapshot['user']['user_id'])
     path.mkdir(exist_ok = True)
     path = path / datetime.fromtimestamp(snapshot['timestamp']/1000).strftime('%Y-%m-%d_%H-%M-%S.%f')

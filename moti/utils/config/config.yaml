@@ -7,3 +7,7 @@ client:
   host: 127.0.0.1
   port: 8000
   path: sample.mind.gz
+
+saver:
+  queue: rabbitmq://127.0.0.1:5672/
+  db: mongodb://127.0.0.1:27017/

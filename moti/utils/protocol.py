@@ -116,9 +116,11 @@ class Snapshot:
             self.fmt =  fmt
 
         def compactify(self, path, timestamp):
-            path = path / (self.fmt + 'TIME'+ datetime.fromtimestamp(timestamp/1000).strftime('%Y-%m-%d_%H-%M-%S.%f') + '.npy')
+            path = path / (self.fmt + 'TIME'+ datetime.fromtimestamp(timestamp/1000).strftime('%Y-%m-%d_%H-%M-%S.%f') + '.bin')
             fp = path.open('wb+')
-            numpy.save(fp, self.image, allow_pickle = False)
+            for box in self.image:
+                fp.write(pack(self.fmt, *box))
+            fp.close()
             return {'height' : self.height,
                     'width' : self.width,
                     'image' : str(path),

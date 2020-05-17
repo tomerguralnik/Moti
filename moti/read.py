@@ -1,7 +1,9 @@
 from .utils import Reader
-from .cli import reader
 import click
 
+@click.group()
+def reader():
+	pass
 
 @reader.command()
 @click.option('--path', prompt='Path', help='Path of snapshot')

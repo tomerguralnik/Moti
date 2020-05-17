@@ -2,11 +2,14 @@ from furl import furl
 from pathlib import Path
 import importlib
 import click
-from .cli import saver_cli
 from .utils import Transfer, Parser
 import sys
-from .utils import camel_from_snake
+from .utils import camel_from_snake, Config_handler
 
+@click.group()
+def saver_cli():
+    pass
+    
 @saver_cli.command()
 @click.argument('database')
 @click.argument('field')
@@ -16,9 +19,18 @@ def save(database, field, data):
     saver.save(field, data)
 
 @saver_cli.command()
-@click.argument('database_url')
-@click.argument('queue_url')
-def run_saver(database_url, queue_url):
+@click.argument('database_url', nargs = -1)
+@click.option('--config', '-c', help = 'Config file')
+def run_saver(database_url, queue_url = None, config = None):
+    if config:
+        config = Config_handler(config, 'saver')
+        database_url = config.db
+        queue_url = config.queue
+    elif len(database_url) == 2:
+        database_url, queue_url = database_url
+    elif len(database_url) > 2:
+        #TODO:USAGE MESSAGE
+        return None
     saver = Saver(database_url)
     parsers = Parser()
     transfer = Transfer(queue_url + 'Results', parsers.generate_queues(), publish_factory = lambda snapshot, queue: saver.save(queue.split('/')[-2], snapshot))
