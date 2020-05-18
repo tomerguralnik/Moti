@@ -52,8 +52,9 @@ def upload_sample(host = '127.0.0.1', port = '8000', path = 'sample.mind.gz', co
 @click.option('--host', '-h', help='Address of server', default = '127.0.0.1')
 @click.option('--port', '-p', help='User id of snapshot', default = '8000')
 @click.option('--config', '-c', help = 'Config file', default = None)
-@click.argument('path', nargs = -1)
+@click.argument('path', nargs = -1, type = click.STRING)
 def cli_upload_sample(path = 'sample.mind.gz', host = '127.0.0.1', port = '8000', config = None):
     upload_sample(host, port, path, config)
+
 if __name__ == '__main__':
     client()

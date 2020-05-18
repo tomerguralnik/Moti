@@ -16,15 +16,15 @@ def run_parser(field, data):
     return parsers.parse_field(field, data, data_dir)
 
 @parsing.command()
-@click.argument('field')
-@click.argument('data')
+@click.argument('field', type = click.STRING)
+@click.argument('data', type = click.STRING)
 def parse(field, data):
     with open(data, 'r') as file:
         print(run_parser(field, file.read()))
 
 @parsing.command(name = 'run-parser')
-@click.argument('field')
-@click.argument('url')
+@click.argument('field', type = click.STRING)
+@click.argument('url', type = click.STRING)
 def run_parser_cli(field, url):
     parsers = Parser([field])
     purl = furl(url)
@@ -36,7 +36,7 @@ def run_parser_cli(field, url):
     transfer.start()
 
 @parsing.command()
-@click.argument('url')
+@click.argument('url', type = click.STRING)
 def run_all_parsers(url):
     parsers = Parser()
     purl = furl(url)

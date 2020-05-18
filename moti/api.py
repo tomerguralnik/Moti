@@ -58,7 +58,7 @@ class API:
 		snapshot = self.db.find_one('snapshots', {'ID': snapshot_id, 'user_id': user['user_id']})
 		return {result_name: snapshot[result_name]}
 
-	def run(self):
+	def setup(self):
 		@app.route('/users', methods = ['GET'])
 		def get_users_flask():
 			return json.dumps(self.get_users())
@@ -106,10 +106,10 @@ class API:
 
 @api.command(name = 'run-server')
 @click.option('--host', '-h', help = 'Ip', default = '127.0.0.1')
-@click.option('--port', '-p', help =  'Port', default = 5000 )
+@click.option('--port', '-p', help =  'Port', default = 8000 )
 @click.option('--database', '-d', help = 'Database url', default = 'mongodb://127.0.0.1:27017/')
 def run_api_server(host, port, database):
-	API(host, port, database).run()
+	API(host, port, database).setup()
 	app.run(host = host, port = port)
 
 if __name__ == '__main__':

@@ -11,15 +11,15 @@ def saver_cli():
     pass
     
 @saver_cli.command()
-@click.argument('database')
-@click.argument('field')
-@click.argument('data')
+@click.argument('database', type = click.STRING)
+@click.argument('field', type = click.STRING)
+@click.argument('data', type = click.STRING)
 def save(database, field, data):
     saver = Saver(database)
     saver.save(field, data)
 
 @saver_cli.command()
-@click.argument('database_url', nargs = -1)
+@click.argument('database_url', nargs = -1, type = click.STRING)
 @click.option('--config', '-c', help = 'Config file')
 def run_saver(database_url, queue_url = None, config = None):
     if config:
@@ -29,7 +29,8 @@ def run_saver(database_url, queue_url = None, config = None):
     elif len(database_url) == 2:
         database_url, queue_url = database_url
     elif len(database_url) > 2:
-        #TODO:USAGE MESSAGE
+        print('usage: run-saver <database_url> <queue_url>')
+        print('usage: run-saver -c <config>')
         return None
     saver = Saver(database_url)
     parsers = Parser()

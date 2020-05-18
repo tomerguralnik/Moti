@@ -65,7 +65,7 @@ def session_handler(client, publish):
 @click.option('--host', '-h', help='Address of server', default = '127.0.0.1')
 @click.option('--port', '-p', help='User id of snapshot', default = '8000')
 @click.option('--config', '-c', help = 'Config file', default = None)
-@click.argument('queue', nargs = -1)
+@click.argument('queue', nargs = -1, type = click.STRING)
 def cli_run_server(queue, host = '127.0.0.1', port = 8000, config = None):
     if config:
         config = Config_handler(config, 'server')
