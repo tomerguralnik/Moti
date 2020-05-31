@@ -15,6 +15,7 @@ from .utils import Config_handler
 from .utils import Publisher
 from furl import furl
 
+parser = Parser()
 
 @click.group()
 def server():

@@ -65,7 +65,7 @@ services:
   gui:
     image: moti
     ports:
-      - 3000:3000
+      - 8080:8080
     command: python3 -m moti.gui run-server -c config.yaml
     depends_on:
       - api

@@ -2,8 +2,6 @@ import socket
 import click
 import datetime
 from .utils import Connection
-<<<<<<< HEAD
-from .cli import client
 from .utils import Reader
 from .utils import Hello, Config, Snapshot
 from .utils import Config_handler
@@ -63,12 +61,11 @@ def upload_sample(host = '127.0.0.1', port = '8000', path = 'sample.mind.gz', co
     for snapshot in reader:
         serv_snap = reader_to_server(snapshot)
         conn.send_message(hello.serialize())
-        logger.info('sent hello')
+        print('hello')
         config = Config.deserialize(conn.receive_message())
-        logger.info('got config')
+        print('config')
         conn.send_message(serv_snap.serialize(config.fields))
-        logger.info('done snapshot')
-    logger.info('done')
+        print('snapshot')
     conn.close()
 
 @client.command(name = 'upload-sample')
