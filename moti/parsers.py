@@ -2,16 +2,25 @@ from .utils import Consumer
 from .utils import Parser
 from pathlib import Path
 from furl import furl
-from .utils import Publisher, Transfer
+from .utils import Publisher, Transfer, Config_handler
 import click
 
 @click.group()
 def parsing():
     pass
 
-data_dir = Path(__file__).parent.parent.absolute()/'data'
+data_dir = Path(__file__).parent.parent.absolute()/'data' #The directory that parsers save their files to
 
 def run_parser(field, data):
+    """
+    :param field: name of a field
+    :type field: str
+    :param data: data to parse
+    :type data: encoded path
+
+    :return: parsed data
+    :rtype: json string
+    """
     parsers = Parser()
     return parsers.parse_field(field, data, data_dir)
 
@@ -19,13 +28,18 @@ def run_parser(field, data):
 @click.argument('field', type = click.STRING)
 @click.argument('data', type = click.STRING)
 def parse(field, data):
-    with open(data, 'r') as file:
-        print(run_parser(field, file.read()))
+    print(run_parser(field, data.encode('ascii')))
 
 @parsing.command(name = 'run-parser')
 @click.argument('field', type = click.STRING)
-@click.argument('url', type = click.STRING)
-def run_parser_cli(field, url):
+@click.argument('url', nargs = -1, type = click.STRING)
+@click.option('--config', '-c', help = 'Config file', default = None)
+def run_parser_cli(field, url, config = None):
+    if config:
+        config = Config_handler(config, 'parsers')
+        url = config.queue
+    else:
+        url = url[0]
     parsers = Parser([field])
     purl = furl(url)
     purl.scheme = purl.scheme + '_parser'
@@ -35,9 +49,19 @@ def run_parser_cli(field, url):
     transfer = Transfer(url + 'Server', queues, publish_factory = publisher)
     transfer.start()
 
+
 @parsing.command()
-@click.argument('url', type = click.STRING)
-def run_all_parsers(url):
+@click.argument('url', nargs = -1, type = click.STRING)
+@click.option('--config', '-c', help = 'Config file', default = None)
+def run_all_parsers(url, config = None):
+    """
+    This function runs all parsers
+    """
+    if config:
+        config = Config_handler(config, 'parsers')
+        url = config.queue
+    else:
+        url = url[0]
     parsers = Parser()
     purl = furl(url)
     purl.scheme = purl.scheme + '_parser'

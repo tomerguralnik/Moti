@@ -9,15 +9,23 @@ from .utils import Publisher
 from furl import furl
 parser = Parser()
 
+
 @click.group()
 def server():
     pass
 
-def reverse(tup):
-    a,b,c = tup
-    return (c, b, a)
 
 def run_server(publish, host = '127.0.0.1', port = 8000):
+    """
+    Run the server
+
+    :param publish: a publish function/class
+    :type publish: callable
+    :param host: the ip of the server, defaults to '127.0.0.1'
+    :type host: str(,optional)
+    :param port: the port number of the server, defaults to 8000
+    :type port: int or str(,optional)
+    """
     server = Listener(int(port), host)
     server.start()
     while True:
@@ -28,6 +36,15 @@ def run_server(publish, host = '127.0.0.1', port = 8000):
 
 
 def session_handler(client, publish):
+    """
+    Handles all hello -> config -> snapshot sessions
+    with a client
+
+    :param client: the connection object of client
+    :type client: Connection
+    :param publish: publisher function/class
+    :type publihs: callabale
+    """
     while(True):
         fields = parser.fields
         lock = threading.Lock()

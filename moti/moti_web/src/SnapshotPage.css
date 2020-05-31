@@ -1,0 +1,39 @@
+.Moti-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.Moti-header {
+  background-color: #FFA500;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.Snapshot {
+	text-align: center;
+}
+
+.FeelingsText {
+	background-color: red;
+	padding: 20px;
+}
+
+.Pose-Pic{
+	height: 150px;
+	width: 150px;
+}
+
+.PoseText{
+	background-color: teal;
+	padding: 20px;
+}
+
+.Images{
+	background-color: khaki;
+}
+@keyframes App-logo-spin {
+  0% {transform: rotate(0deg); filter: invert(0%);}
+  50% {transform: rotate(180deg);filter: invert(100%);}
+  100% {transform: rotate(360deg); filter: invert(0%);}
+}

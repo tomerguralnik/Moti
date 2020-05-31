@@ -1,0 +1,14 @@
+docs
+data
+Dockercompose
+docker-compose.yml
+cortex.poto
+README.md
+sample.mind
+sample.mind.gz
+logs
+tests
+.git
+node_modules
+moti/moti_web/node_modules
+moti/moti_web/build

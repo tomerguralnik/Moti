@@ -1,7 +1,18 @@
 import yaml
 from pathlib import Path
 class Config_handler:
+	"""
+	A config handler loads the desired part of the config file into __dict__
+	"""
 	def __init__(self, path, part = None):
+		"""
+		Loads the desired part of config file into __dict__
+
+		:param path: path to config file
+		:type path: str
+		:param part: the name of the part of the config file you want, defaults to None
+		:type part: str or None(,optional)
+		"""
 		utils = Path(__file__).parent.absolute()
 		path = utils / 'config/' / path
 		with open(path) as reader:
