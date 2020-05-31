@@ -1,0 +1,529 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moti package &mdash; moti 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> moti
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">moti package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-moti.api">moti.api module</a></li>
+<li><a class="reference internal" href="#module-moti.cli">moti.cli module</a></li>
+<li><a class="reference internal" href="#module-moti.client">moti.client module</a></li>
+<li><a class="reference internal" href="#module-moti.gui">moti.gui module</a></li>
+<li><a class="reference internal" href="#module-moti.parsers">moti.parsers module</a></li>
+<li><a class="reference internal" href="#module-moti.read">moti.read module</a></li>
+<li><a class="reference internal" href="#module-moti.saver">moti.saver module</a></li>
+<li><a class="reference internal" href="#module-moti.server">moti.server module</a></li>
+<li><a class="reference internal" href="#module-moti">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">moti</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>moti package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/moti.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="moti-package">
+<h1>moti package<a class="headerlink" href="#moti-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="moti.utils.html">moti.utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moti.utils.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="moti.utils.publishers.html">moti.utils.publishers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="moti.utils.publishers.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moti.utils.publishers.html#module-moti.utils.publishers.rabbitmq_parser_publisher">moti.utils.publishers.rabbitmq_parser_publisher module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moti.utils.publishers.html#module-moti.utils.publishers.rabbitmq_server_publisher">moti.utils.publishers.rabbitmq_server_publisher module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moti.utils.publishers.html#module-moti.utils.publishers">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="moti.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moti.utils.html#module-moti.utils.connection">moti.utils.connection module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moti.utils.html#module-moti.utils.consumer">moti.utils.consumer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moti.utils.html#module-moti.utils.database_reader">moti.utils.database_reader module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moti.utils.html#module-moti.utils.handle_config">moti.utils.handle_config module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moti.utils.html#module-moti.utils.listener">moti.utils.listener module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moti.utils.html#module-moti.utils.misc">moti.utils.misc module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moti.utils.html#module-moti.utils.parser">moti.utils.parser module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moti.utils.html#module-moti.utils.protocol">moti.utils.protocol module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moti.utils.html#module-moti.utils.publisher">moti.utils.publisher module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moti.utils.html#module-moti.utils.reader">moti.utils.reader module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moti.utils.html#module-moti.utils.transfer">moti.utils.transfer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moti.utils.html#module-moti.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-moti.api">
+<span id="moti-api-module"></span><h2>moti.api module<a class="headerlink" href="#module-moti.api" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="moti.api.API">
+<em class="property">class </em><code class="sig-prename descclassname">moti.api.</code><code class="sig-name descname">API</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">host</span></em>, <em class="sig-param"><span class="n">port</span></em>, <em class="sig-param"><span class="n">database_url</span></em><span class="sig-paren">)</span><a class="headerlink" href="#moti.api.API" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="moti.api.API.get_result">
+<code class="sig-name descname">get_result</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_id</span></em>, <em class="sig-param"><span class="n">snapshot_id</span></em>, <em class="sig-param"><span class="n">result_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#moti.api.API.get_result" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_id</strong> (<em>int</em><em> or </em><em>str</em>) – a user id</p></li>
+<li><p><strong>snapshot_id</strong> (<em>int</em><em> or </em><em>str</em>) – a snapshot id</p></li>
+<li><p><strong>result_name</strong> (<em>str</em>) – a field name</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dictionary representing the field of the snapshot
+This dictionary also has a copy of all files in the dictionary
+found in the database on it’s top level</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="moti.api.API.get_snapshot">
+<code class="sig-name descname">get_snapshot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_id</span></em>, <em class="sig-param"><span class="n">snapshot_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#moti.api.API.get_snapshot" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_id</strong> (<em>int</em><em> or </em><em>str</em>) – a user id</p></li>
+<li><p><strong>snapshot_id</strong> (<em>int</em><em> or </em><em>str</em>) – a snapshot id</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dictionary representing the snapshot</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="moti.api.API.get_snapshots">
+<code class="sig-name descname">get_snapshots</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#moti.api.API.get_snapshots" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>user_id</strong> (<em>int</em><em> or </em><em>str</em>) – a user id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of all snapshots correlated to user</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="moti.api.API.get_user">
+<code class="sig-name descname">get_user</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#moti.api.API.get_user" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>user_id</strong> (<em>int</em><em> or </em><em>str</em>) – a user id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a dictionary with all personal information of the user</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="moti.api.API.get_users">
+<code class="sig-name descname">get_users</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#moti.api.API.get_users" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of all users in the database</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="moti.api.API.setup">
+<code class="sig-name descname">setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#moti.api.API.setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>This functions uses the basic API functions
+changing them to a desired format and routing with flask</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="moti.api.generate_urls">
+<code class="sig-prename descclassname">moti.api.</code><code class="sig-name descname">generate_urls</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dic</span></em>, <em class="sig-param"><span class="n">url</span></em><span class="sig-paren">)</span><a class="headerlink" href="#moti.api.generate_urls" title="Permalink to this definition">¶</a></dt>
+<dd><p>For every path to a file in dic add an entry containing
+it’s designated url</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dic</strong> (<em>dict</em>) – a dictionary</p></li>
+<li><p><strong>url</strong> (<em>str</em>) – a base url string</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="moti.api.get_all_files">
+<code class="sig-prename descclassname">moti.api.</code><code class="sig-name descname">get_all_files</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dic</span></em>, <em class="sig-param"><span class="n">current</span></em><span class="sig-paren">)</span><a class="headerlink" href="#moti.api.get_all_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterating over current dictionary going recursivly into every dictionary inside
+if a key: path to file entry is found somewhere inside current then key: path to file
+is added to top level of dic</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dic</strong> (<em>dict</em>) – a dictionary</p></li>
+<li><p><strong>current</strong> (<em>dict</em>) – a dictionary, should be a copy of dic for first call</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="moti.api.is_file">
+<code class="sig-prename descclassname">moti.api.</code><code class="sig-name descname">is_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">val</span></em><span class="sig-paren">)</span><a class="headerlink" href="#moti.api.is_file" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>val</strong> (<em>Object</em>) – anything</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if val is an existing file, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-moti.cli">
+<span id="moti-cli-module"></span><h2>moti.cli module<a class="headerlink" href="#module-moti.cli" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-moti.client">
+<span id="moti-client-module"></span><h2>moti.client module<a class="headerlink" href="#module-moti.client" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="moti.client.reader_to_server">
+<code class="sig-prename descclassname">moti.client.</code><code class="sig-name descname">reader_to_server</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">snapshot</span></em><span class="sig-paren">)</span><a class="headerlink" href="#moti.client.reader_to_server" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>snapshot</strong> (<a class="reference internal" href="moti.utils.html#moti.utils.reader.ReaderSnapshot" title="moti.utils.reader.ReaderSnapshot"><em>ReaderSnapshot</em></a>) – a snapshot as generated by reader</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>client-server protocol snapshot</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="moti.utils.html#moti.utils.protocol.Snapshot" title="moti.utils.protocol.Snapshot">Snapshot</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="moti.client.upload_sample">
+<code class="sig-prename descclassname">moti.client.</code><code class="sig-name descname">upload_sample</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">host</span><span class="o">=</span><span class="default_value">'127.0.0.1'</span></em>, <em class="sig-param"><span class="n">port</span><span class="o">=</span><span class="default_value">'8000'</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">'sample.mind.gz'</span></em>, <em class="sig-param"><span class="n">config</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#moti.client.upload_sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>If a config file is present set all other params to values
+specified in config file</p>
+<p>This function uploads all snapshots in the provided path to the server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>host</strong> (<em>str</em><em>(</em><em>,</em><em>optional</em><em>)</em>) – ip of server, defaults to ‘127.0.0.1’</p></li>
+<li><p><strong>port</strong> (<em>int</em><em> or </em><em>str</em><em>(</em><em>,</em><em>optional</em><em>)</em>) – port of server, defaults to ‘8000’</p></li>
+<li><p><strong>path</strong> (<em>str</em><em>(</em><em>,</em><em>optional</em><em>)</em>) – path to snapshots, defaults to ‘sample.mind.gz’</p></li>
+<li><p><strong>config</strong> (<em>str</em><em>(</em><em>,</em><em>optional</em><em>)</em>) – a name of config file, defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-moti.gui">
+<span id="moti-gui-module"></span><h2>moti.gui module<a class="headerlink" href="#module-moti.gui" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="moti.gui.make_server">
+<code class="sig-prename descclassname">moti.gui.</code><code class="sig-name descname">make_server</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">api_port</span></em>, <em class="sig-param"><span class="n">api_host</span></em><span class="sig-paren">)</span><a class="headerlink" href="#moti.gui.make_server" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-moti.parsers">
+<span id="moti-parsers-module"></span><h2>moti.parsers module<a class="headerlink" href="#module-moti.parsers" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="moti.parsers.run_parser">
+<code class="sig-prename descclassname">moti.parsers.</code><code class="sig-name descname">run_parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">field</span></em>, <em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#moti.parsers.run_parser" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>field</strong> (<em>str</em>) – name of a field</p></li>
+<li><p><strong>data</strong> (<em>encoded path</em>) – data to parse</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>parsed data</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>json string</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-moti.read">
+<span id="moti-read-module"></span><h2>moti.read module<a class="headerlink" href="#module-moti.read" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="moti.read.read">
+<code class="sig-prename descclassname">moti.read.</code><code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#moti.read.read" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-moti.saver">
+<span id="moti-saver-module"></span><h2>moti.saver module<a class="headerlink" href="#module-moti.saver" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="moti.saver.Saver">
+<em class="property">class </em><code class="sig-prename descclassname">moti.saver.</code><code class="sig-name descname">Saver</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">database_url</span></em><span class="sig-paren">)</span><a class="headerlink" href="#moti.saver.Saver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="moti.saver.Saver.get_savers">
+<code class="sig-name descname">get_savers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#moti.saver.Saver.get_savers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import all savers in ./utils/savers
+Every saver should have ‘saver’ in the name of it’s file
+Only one saver per file
+The name of file should be in snake case
+The name of saver should be in camel case and the same as file’s name
+The saver should have ‘protocol’ variable so it can be chosen by that variable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="moti.saver.Saver.save">
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">topic</span></em>, <em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#moti.saver.Saver.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-moti.server">
+<span id="moti-server-module"></span><h2>moti.server module<a class="headerlink" href="#module-moti.server" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="moti.server.run_server">
+<code class="sig-prename descclassname">moti.server.</code><code class="sig-name descname">run_server</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">publish</span></em>, <em class="sig-param"><span class="n">host</span><span class="o">=</span><span class="default_value">'127.0.0.1'</span></em>, <em class="sig-param"><span class="n">port</span><span class="o">=</span><span class="default_value">8000</span></em><span class="sig-paren">)</span><a class="headerlink" href="#moti.server.run_server" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>publish</strong> (<em>callable</em>) – a publish function/class</p></li>
+<li><p><strong>host</strong> (<em>str</em><em>(</em><em>,</em><em>optional</em><em>)</em>) – the ip of the server, defaults to ‘127.0.0.1’</p></li>
+<li><p><strong>port</strong> (<em>int</em><em> or </em><em>str</em><em>(</em><em>,</em><em>optional</em><em>)</em>) – the port number of the server, defaults to 8000</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="moti.server.session_handler">
+<code class="sig-prename descclassname">moti.server.</code><code class="sig-name descname">session_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">client</span></em>, <em class="sig-param"><span class="n">publish</span></em><span class="sig-paren">)</span><a class="headerlink" href="#moti.server.session_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles all hello -&gt; config -&gt; snapshot sessions
+with a client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> (<a class="reference internal" href="moti.utils.html#moti.utils.connection.Connection" title="moti.utils.connection.Connection"><em>Connection</em></a>) – the connection object of client</p></li>
+<li><p><strong>publish</strong> – publisher function/class</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-moti">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-moti" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Tomer Guralnik
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
