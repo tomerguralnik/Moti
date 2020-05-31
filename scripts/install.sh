@@ -9,6 +9,7 @@ function main {
     find .env -name site-packages -exec bash -c 'echo "../../../../" > {}/self.pth' \;
     .env/bin/pip install -U pip
     .env/bin/pip install -r requirements.txt
+    sudo docker build -t moti
 }
 
 

@@ -1,0 +1,77 @@
+version: "3.8"
+services:
+  db:
+    image: mongo
+    ports: 
+      - 27017:27017
+  message_queue:
+    image: rabbitmq
+    ports: 
+      - 5672:5672
+  server:
+    image: moti
+    ports: 
+      - 8000:8000
+    volumes: 
+      - data:/data
+    command: ./wait-for-it.sh message_queue:5672 -- python3 -m moti.server run-server -c config.yaml
+    depends_on: 
+      - message_queue
+  pose_parser:
+    image: moti
+    volumes: 
+      - data:/data
+    command: ./wait-for-it.sh message_queue:5672 -- python3 -m moti.parsers run-parser pose -c config.yaml
+    depends_on: 
+      - message_queue
+  feelings_parsers:
+    image: moti
+    volumes: 
+      - data:/data
+    command: ./wait-for-it.sh message_queue:5672 -- python3 -m moti.parsers run-parser feelings -c config.yaml
+    depends_on: 
+      - message_queue
+  color_image_parser:
+    image: moti
+    volumes: 
+      - data:/data
+    command: ./wait-for-it.sh message_queue:5672 -- python3 -m moti.parsers run-parser color_image -c config.yaml
+    depends_on: 
+      - message_queue
+  depth_image_parser:
+    image: moti
+    volumes: 
+      - data:/data
+    command: ./wait-for-it.sh message_queue:5672 -- python3 -m moti.parsers run-parser depth_image -c config.yaml
+    depends_on: 
+      - message_queue
+  saver:
+    image: moti
+    volumes: 
+      - data:/data
+    command: ./wait-for-it.sh message_queue:5672 -- python3 -m moti.saver run-saver -c config.yaml
+    depends_on: 
+      - message_queue
+      - db
+  api:
+    image: moti
+    ports:
+      - 5000:5000
+    volumes: 
+      - data:/data
+    command: ./wait-for-it.sh db:27017 -- python3 -m moti.api run-server -c config.yaml
+    depends_on: 
+      - db
+  gui:
+    image: moti
+    ports:
+      - 3000:3000
+    command: python3 -m moti.gui run-server -c config.yaml
+    depends_on:
+      - api
+volumes:
+  data: 
+
+          
+        
+

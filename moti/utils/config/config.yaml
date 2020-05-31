@@ -1,9 +1,27 @@
 server:
-  host: 127.0.0.1
+  host: 0.0.0.0
   port: 8000
   data: data
 
 client:
-  host: 127.0.0.1
+  host: 0.0.0.0
   port: 8000
   path: sample.mind.gz
+
+saver:
+  queue: rabbitmq://message_queue:5672/
+  db: mongodb://db:27017/
+
+api:
+  db: mongodb://db:27017/
+  host: 0.0.0.0
+  port: 5000
+
+parsers:
+  queue: rabbitmq://message_queue:5672/
+
+gui:
+  host: 0.0.0.0
+  port: 8080
+  api_host: 0.0.0.0
+  api_port: 5000

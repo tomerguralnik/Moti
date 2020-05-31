@@ -4,18 +4,29 @@ from datetime import datetime
 
 def read_string(message):
     point = 0
+    p_2 = 0
     x = yield
     while point < len(message):
+        p_2 += x
         x = yield message[point: point + x]
-        point += x
+        point = p_2
 
 class BinReader:
-
+    """
+    A reader for the regular binary format
+    """
     def __init__(self, path):
+        """
+        :param path: path to sample file
+        :type path: str
+        """
         path = Path(path)
         self.file = open(path, 'rb')
 
     def get_user(self):
+        """
+        Get user's data
+        """
         try:
             ret = {'user_id' : unpack('L', self.file.read(8))[0]}
             user_len = unpack('I', self.file.read(4))[0]
@@ -29,6 +40,9 @@ class BinReader:
             raise e
 
     def get_snapshot(self):
+        """
+        Get the next snapshot
+        """
         try:
             ret = {'timestamp' : unpack('L', self.file.read(8))[0]}
             translation = unpack('ddd', self.file.read(24))
@@ -58,32 +72,22 @@ class BinReader:
             print("bin_get_snapshot failed", e)
             raise e
 
-'''
-    def __next__(self):
-        try:
-            timestamp = int(unpack('L', self.file.read(8))[0]/1000)
-            #timestamp = datetime.fromtimestamp(timestamp/1000)\
-            #    .strftime('%Y-%m-%d %H:%M:%S.%f')
-            translation = unpack('ddd', self.file.read(24))
-            rotation = unpack('d' * 4, self.file.read(32))
-            color_height = unpack('I', self.file.read(4))[0]
-            color_width = unpack('I', self.file.read(4))[0]
-            color_image = Snapshot.Image.deserialize(self.file.read(color_height * color_width * 3)\
-                                                        ,color_height, color_width, 'color')
-            depth_height = unpack('I', self.file.read(4))[0]
-            depth_width = unpack('I', self.file.read(4))[0]
-            depth_image = Snapshot.Image.deserialize(self.file.read(depth_height * depth_width * 4)\
-                                                        ,depth_height, depth_width, 'depth')
-            feelings = unpack('f' * 4, self.file.read(16))
-            return Snapshot(timestamp, translation, rotation,
-                            color_image, depth_image, feelings)
-        except Exception:
-            raise StopIteration()
-'''
-
 
 class ReaderImage:
+    """
+    A more suitable format for images
+    """
     def __init__(self, height, width, image, fmt):
+        """
+        :param height: the height of the image
+        :type height: int
+        :param width: the width of the image
+        :type width: int
+        :param image: the image in a flat list of tuples according to fmt
+        :type image: list
+        :param fmt: the struct format of the image, for example: RGB would be 'BBB' 
+        :type fmt: str
+        """
         self.height = height
         self.width = width
         self.image = image

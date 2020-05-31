@@ -1,11 +1,8 @@
 import threading
 import logging
 from pathlib import Path
-from struct import unpack
 import click
-from .cli import server
 from .utils import Listener
-from .thought import Thought
 from .utils import Hello, Config, Snapshot
 from .utils import read_string, Parser
 from PIL import Image
@@ -13,81 +10,98 @@ import json
 from datetime import datetime
 from functools import reduce
 from .utils import Config_handler
-parser = Parser()
-logging.basicConfig(format = '%(levelname).1s %(asctime)s %(message)s',
-					datefmt = '%Y-%m-%d %H:%M:%S')
-logger = logging.getLogger('server_I')
-logger.setLevel(logging.INFO)
+from .utils import Parser
+from .utils import Config_handler
+from .utils import Publisher
+from furl import furl
 
-def reverse(tup):
-	a,b,c = tup
-	return (c, b, a)
 
-@server.command()
-@click.option('--host', '-h', help = 'Host ip', default = '127.0.0.1')
-@click.option('--port', '-p', help = 'Host port', default = '8000')
-@click.option('--data', '-d', help = 'The path to data dictionary', default = 'data')
+@click.group()
+def server():
+    pass
+
+
+def run_server(publish, host = '127.0.0.1', port = 8000):
+    """
+    Run the server
+
+    :param publish: a publish function/class
+    :type publish: callable
+    :param host: the ip of the server, defaults to '127.0.0.1'
+    :type host: str(,optional)
+    :param port: the port number of the server, defaults to 8000
+    :type port: int or str(,optional)
+    """
+    server = Listener(int(port), host)
+    server.start()
+    while True:
+        client = server.accept()
+        t = threading.Thread(target=session_handler, args=(client, publish))
+        t.start()
+    server.stop()
+
+
+def session_handler(client, publish):
+    """
+    Handles all hello -> config -> snapshot sessions
+    with a client
+
+    :param client: the connection object of client
+    :type client: Connection
+    :param publish: publisher function/class
+    :type publihs: callabale
+    """
+    while(True):
+        fields = parser.fields
+        lock = threading.Lock()
+        try:
+            hi_message = client.receive_message()
+        except Exception:
+            print("bad hello message")
+            return
+        try:
+            hello = Hello.deserialize(hi_message)
+        except Exception as e:
+            print("Hello:", e)
+            return
+        print('got hello')
+        print(fields)
+        config = Config(fields)
+        client.send_message_to_addr(config.serialize())
+        print('sent config')
+        try:
+            snap_message = client.receive_message()
+        except Exception:
+            print("bad snapshot")
+            return
+        try:
+            snapshot = Snapshot.deserialize(snap_message)
+        except Exception as e:
+            print("Snapshot:", e)
+            return
+        print('got snapshot')
+        snapshot.user = hello.as_dict
+        publish(snapshot)
+        print('done')
+
+@server.command(name = 'run-server')
+@click.option('--host', '-h', help='Address of server', default = '127.0.0.1')
+@click.option('--port', '-p', help='User id of snapshot', default = '8000')
 @click.option('--config', '-c', help = 'Config file', default = None)
-def run_server(host = '127.0.0.1', port = '8000', data = 'data', config = None):
-	if config:
-		logger.info("Reading config file")
-		config = Config_handler(config, 'server')
-		port = config.port
-		host = config.host
-		data = config.data
-	server = Listener(int(port), host)
-	server.start()
-	logger.info("Server started")
-	p = Path(data)
-	if p.is_file():
-		raise Exception('data is a file and not a directory')
-	while True:
-		client = server.accept()
-		t = threading.Thread(target=session_handler, args=(client, p))
-		t.start()
-	server.stop()
-	logger.info("Server stopped")
-
-
-def session_handler(client, path):
-	while(True):
-		fields = parser.parsers.keys()
-		lock = threading.Lock()
-		try:
-			hi_message = client.receive_message()
-		except Exception:
-			logger.info("bad hello message")
-			return
-		try:
-			hello = Hello.deserialize(hi_message)
-		except Exception as e:
-			logger.debug("Hello:", e)
-			return
-		logger.info('got hello')
-		logger.debug(f'Fields: {fields}')
-		config = Config(fields)
-		client.send_message_to_addr(config.serialize())
-		logger.info('sent config')
-		try:
-			snap_message = client.receive_message()
-		except Exception:
-			logger.debug("bad snapshot")
-			return
-		try:
-			snapshot = Snapshot.deserialize(snap_message)
-		except Exception as e:
-			debug_logger.debug("Snapshot:", e)
-			return
-		logger.info('got snapshot')
-		lock.acquire()
-		p = path / f'{hello.user_id}'
-		p.mkdir(exist_ok=True)
-		p = p / f"{datetime.fromtimestamp(snapshot.timestamp/1000).strftime('%Y-%m-%d_%H-%M-%S.%f')}"
-		p.mkdir(exist_ok=True)
-		parser.parse(fields ,snapshot, p)
-		lock.release()
-		logger.debug('done')
-
+@click.argument('queue', nargs = -1, type = click.STRING)
+def cli_run_server(queue, host = '127.0.0.1', port = 8000, config = None):
+    if config:
+        config = Config_handler(config, 'server')
+        host = config.host
+        port = config.port
+        queue = config.queue
+    else:
+        queue = queue[0]
+    queue = furl(queue)
+    queue.scheme = queue.scheme + '_server'
+    data_dict = Path(__file__).parent.parent.absolute()/'data'
+    publisher = Publisher(parser.generate_queues(), str(queue), path = data_dict)
+    run_server(publisher, host, port)
 
 if __name__ == '__main__':
-	server()
+    server()
