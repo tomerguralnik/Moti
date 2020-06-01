@@ -23,7 +23,6 @@ def parse_color_image(snapshot, path):
         timestamp, and path to the color image
     :rtype: json str
     """
-    print('color_image')
     snapshot = Path(snapshot.decode('ascii'))
     with snapshot.open() as snap:
         snapshot = json.load(snap)
@@ -63,7 +62,6 @@ def parse_pose(snapshot, path):
         timestamp, and pose, pose contains a path to 3d representation of translation
     :rtype: json str
     """
-    print('pose')
     snapshot = Path(snapshot.decode('ascii'))
     with snapshot.open() as snap:
         snapshot = json.load(snap)
@@ -99,7 +97,6 @@ def parse_feelings(snapshot, path):
         timestamp, and feelings
     :rtype: json str
     """
-    print('feelings')
     snapshot = Path(snapshot.decode('ascii'))
     with snapshot.open() as snap:
         snapshot = json.load(snap)
@@ -123,7 +120,6 @@ def parse_depth_image(snapshot, path):
         timestamp, and path to the depth image
     :rtype: json str
     """
-    print('depth_image')
     snapshot = Path(snapshot.decode('ascii'))
     with snapshot.open() as snap:
         snapshot = json.load(snap)

@@ -61,11 +61,8 @@ def upload_sample(host = '127.0.0.1', port = '8000', path = 'sample.mind.gz', co
     for snapshot in reader:
         serv_snap = reader_to_server(snapshot)
         conn.send_message(hello.serialize())
-        print('hello')
         config = Config.deserialize(conn.receive_message())
-        print('config')
         conn.send_message(serv_snap.serialize(config.fields))
-        print('snapshot')
     conn.close()
 
 @client.command(name = 'upload-sample')

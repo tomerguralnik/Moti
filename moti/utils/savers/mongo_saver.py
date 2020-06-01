@@ -30,7 +30,6 @@ class MongoSaver:
         :param data: a json string passed from a parser
         :type topic: json string 
         """
-        print(topic, data)
         snap = json.loads(data)
         user_deets = snap['user']
         timestamp = snap['timestamp']

@@ -26,7 +26,6 @@ class ProtoReader:
             length = unpack('I', test)[0]
             user = cortex_pb2.User()
             user.ParseFromString(self.file.read(length))
-            print(user)
             ret = {'user_id' : user.user_id}
             ret['user_name'] = user.username
             ret['birth_date'] = datetime.fromtimestamp(user.birthday)\
@@ -63,7 +62,6 @@ class ProtoReader:
             return ret
         except Exception as e:
             if isinstance(e, struct.error): 
-                print('finished!')
                 raise StopIteration
             print("get_sanpshot failed", e)
             raise e

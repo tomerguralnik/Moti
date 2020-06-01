@@ -65,11 +65,9 @@ def session_handler(client, publish):
         except Exception as e:
             print("Hello:", e)
             return
-        print('got hello')
         print(fields)
         config = Config(fields)
         client.send_message_to_addr(config.serialize())
-        print('sent config')
         try:
             snap_message = client.receive_message()
         except Exception:
@@ -80,10 +78,8 @@ def session_handler(client, publish):
         except Exception as e:
             print("Snapshot:", e)
             return
-        print('got snapshot')
         snapshot.user = hello.as_dict
         publish(snapshot)
-        print('done')
 
 @server.command(name = 'run-server')
 @click.option('--host', '-h', help='Address of server', default = '127.0.0.1')

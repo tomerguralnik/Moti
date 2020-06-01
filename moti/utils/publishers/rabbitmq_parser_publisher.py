@@ -35,7 +35,6 @@ class RabbitmqParserPublisher:
 								 exchange_type = 'direct')
 		self.channel = channel
 		for queue in queues:
-			print(f"{self.name}/{queue}")
 			self.channel.queue_declare(queue = f"{self.name}/{queue}")
 			self.channel.queue_bind(exchange = self.name,
 							   		queue = f"{self.name}/{queue}",
@@ -51,7 +50,6 @@ class RabbitmqParserPublisher:
 		:param queue: name of queue the snapshot was rea from
 		:type queue: str
 		"""
-		print(f"GREETINGS!! PARSER {queue}")
 		parser = self.parsers.decode_queue(queue)
 		self.channel.basic_publish(exchange = self.name, 
 								   body = parser(snapshot, self.path),
