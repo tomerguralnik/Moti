@@ -127,6 +127,7 @@ The `moti` packages provides the following Classes and Modules:
     Parsed 'pose' field from data
     ```
 - `saver`
+
     The saver reads parsed data from the messsage queue and saves it to a database
     
     The `saver` exposes the following *cli* functions:
@@ -152,6 +153,7 @@ The `moti` packages provides the following Classes and Modules:
     ... # saves data as pose of a snapshot
     ```
 - `api`
+
     This module runs an api server that serves data inside a database
     The `api` handles `GET` requests to specific endpoints, these endpoints are described in the documentation of `moti.api` and `moti.cli`
     The `api` exposes the `run-server` *cli* function:
@@ -173,6 +175,7 @@ The `moti` packages provides the following Classes and Modules:
     ```
     
 - `cli`
+
     The `cli` consumes the api with the following *cli* functions:
     ```python
     $ python3 -m cortex.cli get-users
@@ -187,6 +190,7 @@ The `moti` packages provides the following Classes and Modules:
     ... # get a selected field of a snapshot
     ```
 - `gui`
+
     The `gui` consumes the `api` and displays the snapshots in a nice and fun way
     Run the gui with the cli function:
     ```sh
