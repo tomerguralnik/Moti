@@ -13,11 +13,13 @@ Welcome to my Advanced System Design **FINAL!!!!** Project!
     ...
     $ cd moti/
     ```
-2. To check that everything is working as expected, run the tests:
+2. Run the installation script and activate the virtual environment:
 
     ```sh
-    $ pytest tests/
+    $ ./scripts/install.sh
     ...
+    $ . .env/bin/activate
+    [moti] $ # you're good to go!
     ```
 3. Build the docker image:
 
