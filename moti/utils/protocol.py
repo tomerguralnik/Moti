@@ -68,7 +68,7 @@ class Hello:
         u_nm = self.user_name
         b_dt = self.birth_date.strftime('%Y-%m-%d %H:%M:%S')
         gender = self.gender
-        return f'{u_id}, {u_nm}, Born {b_dt}, {gender=}'
+        return f'{u_id}, {u_nm}, Born {b_dt}, {'gender =' + self.gender}'
 
     def __repr__(self):
         return f'Hello({self.user_id}, {self.user_name},\
