@@ -31,7 +31,7 @@ class SnapshotPage extends Component{
 					<table class="table table-borderless">
 						<thead>
 							<th>You can see what I see?<br/>This is getting creepy...</th>
-							<th>Not exactly sure what this is tohugh</th>
+							<th>Not exactly sure what this is though</th>
 						</thead>
 						<tbody>
 							<td><ColorImage id={this.props.match.params.id} snapshot={this.props.match.params.snapshot}/></td>
