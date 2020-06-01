@@ -14,23 +14,13 @@ Welcome to my Advanced System Design **FINAL!!!!** Project!
     ...
     $ cd moti/
     ```
-
-2. Run the installation script and activate the virtual environment:
-
-    ```sh
-    $ ./scripts/install.sh
-    ...
-    $ source .env/bin/activate
-    [moti] $ # you're good to go!
-    ```
-
-3. To check that everything is working as expected, run the tests:
+2. To check that everything is working as expected, run the tests:
 
     ```sh
     $ pytest tests/
     ...
     ```
-4. Build the docker image:
+3. Build the docker image:
 
     ```sh
     $ sudo docker build -t moti .
@@ -47,7 +37,7 @@ To run the whole project:
     ...
     ```
 
-2. In a seperate shell run a client to send :
+2. In a seperate shell run a client to send some snapshots:
 
     ```sh
     $ python3 -m moti.client upload-sample <path-to-sample> -h 0.0.0.0 -p 8080
