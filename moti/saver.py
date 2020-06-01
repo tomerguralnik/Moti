@@ -11,10 +11,10 @@ def saver_cli():
     pass
     
 @saver_cli.command()
-@click.argument('database', type = click.STRING)
+@click.option('--database', '-d', help = "the database's url" ,type = click.STRING, default = 'mongodb://127.0.0.1:27017/' )
 @click.argument('field', type = click.STRING)
 @click.argument('data', type = click.STRING)
-def save(database, field, data):
+def save(field, data, database):
     saver = Saver(database)
     saver.save(field, data)
 
@@ -45,13 +45,9 @@ def run_saver(database_url, queue_url = None, config = None):
         print('usage: run-saver <database_url> <queue_url>')
         print('usage: run-saver -c <config>')
         return None
-    print('1')
     saver = Saver(database_url)
-    print('2')
     parsers = Parser()
-    print('3')
     transfer = Transfer(queue_url + 'Results', parsers.generate_queues(), publish_factory = lambda snapshot, queue: saver.save(queue.split('/')[-2], snapshot))
-    print('4')
     transfer.start()
 
 class Saver:

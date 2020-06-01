@@ -5,3 +5,4 @@ moti/utils/__pycache__
 node_modules
 sample.mind
 sample.mind.gz
+.env/
