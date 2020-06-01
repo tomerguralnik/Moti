@@ -63,13 +63,6 @@ class Hello:
             return Hello(user_id, user_name, birth_date, gender)
         raise Exception("Message has wrong format 2")
 
-    def __str__(self):
-        u_id = self.user_id
-        u_nm = self.user_name
-        b_dt = self.birth_date.strftime('%Y-%m-%d %H:%M:%S')
-        gender = self.gender
-        return f'{u_id}, {u_nm}, Born {b_dt}, {'gender =' + self.gender}'
-
     def __repr__(self):
         return f'Hello({self.user_id}, {self.user_name},\
                 {self.birth_date}, {self.gender})'
