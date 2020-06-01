@@ -1,6 +1,3 @@
-![build status](https://travis-ci.org/dan-gittik/foobar.svg?branch=master)
-![coverage](https://codecov.io/gh/dan-gittik/foobar/branch/master/graph/badge.svg)
-
 # moti
 
 Welcome to my Advanced System Design **FINAL!!!!** Project!
